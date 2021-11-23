@@ -30,4 +30,8 @@ public class CoursesQuizServiceImpl implements CoursesQuizService{
     public Optional<CoursesQuiz> getCoursesById(int id){
         return coursesRepository.findById(id);
     }
+    @Override
+    public List<CoursesQuiz> getCoursesByName(String name){
+        return coursesRepository.getCoursesQuizByNameContains(name);
+    }
 }

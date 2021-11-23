@@ -18,10 +18,17 @@ public class LoginController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public User register(@RequestBody User user){
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return userService.createUser(user);
+    public ResponseEntity<?> register(@RequestBody User user){
+        String userRe = user.getUsername();
+        String userDb = (userService.findByUsername(user.getUsername())).getUsername();
+        if(userDb != null && userDb.equals(userRe)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username đã tồn tại");
+        }else {
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+        }
     }
+
     @Autowired
     private TokenService tokenService;
 
@@ -40,4 +47,5 @@ public class LoginController {
         tokenService.createToken(token);
         return ResponseEntity.ok(token.getToken());
     }
+
 }

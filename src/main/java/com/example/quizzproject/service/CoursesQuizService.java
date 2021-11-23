@@ -9,4 +9,5 @@ public interface CoursesQuizService {
     public CoursesQuiz saveCourses(CoursesQuiz coursesQuiz);
     public void removeCourses(int id);
     public Optional<CoursesQuiz> getCoursesById(int id);
+    public List<CoursesQuiz> getCoursesByName(String name);
 }

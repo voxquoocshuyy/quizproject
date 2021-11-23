@@ -2,9 +2,11 @@ package com.example.quizzproject.controller;
 
 import com.example.quizzproject.model.CoursesQuiz;
 import com.example.quizzproject.model.DataQuiz;
+import com.example.quizzproject.repository.CoursesRepository;
 import com.example.quizzproject.service.CoursesQuizService;
 import com.example.quizzproject.service.DataQuizService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,6 @@ public class AdminController {
     private DataQuizService dataQuizService;
     @Autowired
     private CoursesQuizService coursesQuizService;
-
     @PostMapping("/addCourse")
     public ResponseEntity<?> addCourses(@RequestBody CoursesQuiz coursesQuiz) {
         return new ResponseEntity<>(coursesQuizService.saveCourses(coursesQuiz), HttpStatus.CREATED);
@@ -29,6 +30,16 @@ public class AdminController {
     @GetMapping("/course")
     public List<CoursesQuiz> getAllCourse() {
         return coursesQuizService.getAllCourses();
+    }
+
+    @GetMapping("/courses/{name}")
+
+    public List<CoursesQuiz> getCourseByName(@RequestParam String name){
+        if(name!=null) {
+            return coursesQuizService.getCoursesByName(name);
+        }else {
+            return coursesQuizService.getAllCourses();
+        }
     }
 
     @GetMapping("/course/{id}")
